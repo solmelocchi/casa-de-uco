@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa de Uco — Sales Kit</title>
+<style>
+  :root{
+    --brown:#312921;
+    --brown-soft:#4a3f34;
+    --orange:#ED6B00;
+    --cream:#FAF7F2;
+    --paper:#FFFFFF;
+    --line:#E4DED4;
+    --ink:#2b2620;
+    --ink-soft:#6b6259;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3, .brandtype{
+    font-family:'Futura', 'Century Gothic', 'Futura PT', 'Helvetica Neue', sans-serif;
+    font-weight:600;
+    letter-spacing:0.02em;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  img{ display:block; max-width:100%; }
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    background:var(--brown);
+    color:#fff;
+    padding:34px 5vw;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .topbar .logo img{
+    height:150px;
+    width:auto;
+  }
+
+  /* ---------- HERO SLIDER ---------- */
+  .hero{
+    position:relative;
+    width:100%;
+    height:88vh;
+    min-height:520px;
+    overflow:hidden;
+    background:var(--brown);
+  }
+
+  .slide{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transition:opacity 1.4s ease;
+  }
+
+  .slide.active{ opacity:1; z-index:1; }
+
+  .slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  .slide::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(20,16,12,0.05) 0%, rgba(20,16,12,0.10) 45%, rgba(20,16,12,0.62) 100%);
+  }
+
+  .slide-caption{
+    position:absolute;
+    left:6vw;
+    bottom:9%;
+    right:6vw;
+    z-index:2;
+    color:#fff;
+  }
+
+  .slide-caption .eyebrow{
+    font-size:12px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--orange);
+    margin-bottom:14px;
+    font-weight:600;
+  }
+
+  .slide-caption h1{
+    font-size:clamp(28px, 4.6vw, 58px);
+    line-height:1.08;
+    max-width:16ch;
+    text-shadow:0 2px 24px rgba(0,0,0,0.25);
+  }
+
+  .hero-dots{
+    position:absolute;
+    right:6vw;
+    bottom:9%;
+    z-index:3;
+    display:flex;
+    gap:10px;
+  }
+
+  .hero-dot{
+    width:9px; height:9px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.35);
+    border:none;
+    cursor:pointer;
+    padding:0;
+    transition:background .3s ease, transform .3s ease;
+  }
+
+  .hero-dot.active{
+    background:var(--orange);
+    transform:scale(1.25);
+  }
+
+  /* ---------- RESOURCES ---------- */
+  .resources{
+    max-width:900px;
+    margin:0 auto;
+    padding:90px 6vw 110px;
+  }
+
+  .resource-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+
+  .resource-card{
+    background:var(--paper);
+    padding:38px 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:14px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    transition:background .25s ease;
+  }
+
+  .resource-card:hover{
+    background:var(--cream);
+  }
+
+  /* ---------- EXPERIENCE / GALLERY BANNER ---------- */
+  .experience-card{
+    position:relative;
+    display:block;
+    margin-top:28px;
+    height:320px;
+    border-radius:2px;
+    overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(20,16,12,0.15) 0%, rgba(20,16,12,0.75) 100%),
+      url('GALLERY-BG.jpg') center 38% / cover no-repeat,
+      linear-gradient(135deg, var(--brown-soft) 0%, var(--brown) 100%);
+    isolation:isolate;
+  }
+
+  .experience-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(20,16,12,0.18);
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+
+  .experience-card:hover::after{ opacity:1; }
+
+  .experience-content{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    padding:34px 6vw;
+    color:#fff;
+  }
+
+  .experience-content .eyebrow{
+    font-size:12px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--orange);
+    margin-bottom:12px;
+    font-weight:600;
+  }
+
+  .experience-content h2{
+    font-size:clamp(22px, 3vw, 32px);
+    line-height:1.15;
+    max-width:20ch;
+    margin-bottom:16px;
+    text-shadow:0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .experience-cta{
+    display:inline-block;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:#fff;
+    border-bottom:1px solid var(--orange);
+    padding-bottom:4px;
+    transition:color .25s ease, border-color .25s ease;
+  }
+
+  .experience-card:hover .experience-cta{
+    color:var(--orange);
+  }
+
+  .resource-icon{
+    width:26px; height:26px;
+    color:var(--brown-soft);
+  }
+
+  .resource-card:hover .resource-icon{ color:var(--orange); }
+
+  .resource-icon svg{ width:100%; height:100%; stroke-width:1.2; }
+
+  .resource-name{
+    font-family:'Futura','Century Gothic',sans-serif;
+    font-weight:500;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--brown);
+  }
+
+  .resource-arrow{
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:var(--ink-soft);
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+
+  .resource-card:hover .resource-arrow{ opacity:1; color:var(--orange); }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--brown);
+    color:#efe9e0;
+    padding:56px 6vw 30px;
+  }
+
+  .footer-inner{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:40px;
+    padding-bottom:36px;
+  }
+
+  .footer-logo img{ height:120px; opacity:0.95; }
+
+  .footer-contact{ min-width:260px; }
+
+  .contact-label{
+    font-family:'Futura','Century Gothic',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--orange);
+    margin-bottom:16px;
+  }
+
+  .contact-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .contact-list li{
+    position:relative;
+    padding-left:18px;
+    font-size:15px;
+    color:#efe9e0;
+  }
+
+  .contact-list li::before{
+    content:"";
+    position:absolute;
+    left:0; top:8px;
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--orange);
+  }
+
+  .contact-list a{ color:#efe9e0; }
+  .contact-list a:hover{ color:var(--orange); }
+
+  .footer-social{
+    display:flex;
+    gap:12px;
+    margin-top:22px;
+  }
+
+  .social-circle{
+    width:38px; height:38px;
+    border-radius:50%;
+    background:#4a3f34;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .25s ease;
+  }
+
+  .social-circle svg{ width:18px; height:18px; stroke:#fff; fill:none; }
+  .social-circle:hover{ background:var(--orange); }
+
+  footer .footnote{
+    font-size:12px;
+    letter-spacing:0.03em;
+    color:#c9c0b3;
+    border-top:1px solid #4a3f34;
+    padding-top:20px;
+  }
+
+  /* ---------- WHATSAPP FLOATING BUTTON ---------- */
+  .whatsapp-float{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:58px; height:58px;
+    border-radius:50%;
+    background:#25D366;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.3);
+    z-index:50;
+    transition:transform .2s ease;
+  }
+  .whatsapp-float:hover{ transform:scale(1.08); }
+  .whatsapp-float svg{ width:30px; height:30px; fill:#fff; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:640px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:14px; }
+    .contact-row{ gap:16px; width:100%; }
+    .hero{ height:78vh; }
+    .hero-dots{ bottom:6%; }
+    .slide-caption{ bottom:16%; }
+    .resources{ padding:56px 6vw 72px; }
+    .resource-grid{ grid-template-columns:repeat(2, 1fr); }
+    .experience-card{ height:240px; }
+    footer{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP BAR: logo + contact -->
+  <header class="topbar">
+    <div class="logo">
+      <img src="LOGO-CASA-DE-UCO.png" alt="Casa de Uco">
+    </div>
+  </header>
+
+  <!-- HERO SLIDER -->
+  <section class="hero" id="hero">
+    <div class="slide active">
+      <img src="HERO-1.jpg" alt="Bodega Casa de Uco">
+      <div class="slide-caption">
+        <div class="eyebrow">Casa de Uco</div>
+        <h1>Become a winemaker in Argentina</h1>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="HERO-2.jpg" alt="Hotel Casa de Uco">
+      <div class="slide-caption">
+        <div class="eyebrow">Casa de Uco</div>
+        <h1>Sustainable wine hotel &amp; winery in Uco Valley</h1>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="HERO-3.jpg" alt="Viñedos Casa de Uco">
+      <div class="slide-caption">
+        <div class="eyebrow">Casa de Uco</div>
+        <h1>Experience life on a vineyard</h1>
+      </div>
+    </div>
+
+    <div class="hero-dots">
+      <button class="hero-dot active" data-i="0" aria-label="Slide 1"></button>
+      <button class="hero-dot" data-i="1" aria-label="Slide 2"></button>
+      <button class="hero-dot" data-i="2" aria-label="Slide 3"></button>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="resources" id="recursos">
+    <div class="resource-grid">
+
+      <a class="resource-card" href="https://www.casadeuco.com" target="_blank" rel="noopener">
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M4.5 7.5h15M4.5 16.5h15"/></svg>
+        </div>
+        <div class="resource-name">Website</div>
+        <div class="resource-arrow">Open ↗</div>
+      </a>
+
+      <a class="resource-card" href="https://drive.google.com/drive/folders/12JrDBGpmb6Gj9IW2EAKy0K7P_itFPfmW" target="_blank" rel="noopener">
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12.6 3.4l7 7a2 2 0 0 1 0 2.8l-6.4 6.4a2 2 0 0 1-2.8 0l-7-7V4h8.2z"/><circle cx="7.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><path d="M9 17l6-6" stroke-width="1.3"/></svg>
+        </div>
+        <div class="resource-name">Ratesheet</div>
+        <div class="resource-arrow">Open ↗</div>
+      </a>
+
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1g88qdiDGAt43pv_sVOib5kGSgdLyeg7y" target="_blank" rel="noopener">
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 11v5" stroke-linecap="round"/><circle cx="12" cy="7.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div class="resource-name">Factsheet</div>
+        <div class="resource-arrow">Open ↗</div>
+      </a>
+
+      <a class="resource-card" href="https://drive.google.com/drive/folders/19RX-DrSJlwGDgcc3OkuckKZ4YP2THh78" target="_blank" rel="noopener">
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 8-6-16-3 8H2"/></svg>
+        </div>
+        <div class="resource-name">Activities</div>
+        <div class="resource-arrow">Open ↗</div>
+      </a>
+
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1C2UpaDZcUMUixA51WyK8z6IRn62TLdnd" target="_blank" rel="noopener">
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c2 2.5 3 5 3 7a3 3 0 0 1-6 0c0-2 1-4.5 3-7z"/><path d="M6 21c0-4 2.5-6 6-6s6 2 6 6"/></svg>
+        </div>
+        <div class="resource-name">Spa</div>
+        <div class="resource-arrow">Open ↗</div>
+      </a>
+
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1-HHga-sqJfx-QZV3ZzYIig-iW0FNrXsm" target="_blank" rel="noopener">
+        <div class="resource-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="14" height="14" rx="1"/><path d="M17 10l4-3v10l-4-3"/></svg>
+        </div>
+        <div class="resource-name">Videos</div>
+        <div class="resource-arrow">Open ↗</div>
+      </a>
+
+    </div>
+
+    <a class="experience-card" href="https://drive.google.com/drive/folders/1O8eeqpq3jfFc-lqc4uJzMdgbLhdBwlAb" target="_blank" rel="noopener">
+      <div class="experience-content">
+        <div class="eyebrow">Gallery</div>
+        <h2>See more of our experiences</h2>
+        <span class="experience-cta">View Gallery ↗</span>
+      </div>
+    </a>
+  </section>
+
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo"><img src="LOGO-CASA-DE-UCO.png" alt="Casa de Uco"></div>
+      <div class="footer-contact">
+        <div class="contact-label">Contact Us</div>
+        <ul class="contact-list">
+          <li>Ruta 94, kilometro 14.5 &ndash; Camino al Manzano Historico</li>
+          <li>Tunuyan, Valle de Uco, Mendoza, Argentina</li>
+          <li><a href="tel:+542614769831">+54 261 476 9831</a></li>
+          <li><a href="mailto:info@casadeuco.com">info@casadeuco.com</a></li>
+        </ul>
+        <div class="footer-social">
+          <a class="social-circle" href="https://wa.me/5492617051298" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20l1-5.5A8.5 8.5 0 1 1 21 11.5z"/></svg>
+          </a>
+          <a class="social-circle" href="https://www.instagram.com/casadeuco" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a class="social-circle" href="https://www.facebook.com/casadeuco" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 8h2V5h-2a4 4 0 0 0-4 4v2H9v3h2v6h3v-6h2.5l.5-3H14V9a1 1 0 0 1 1-1z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footnote">Vineyards &amp; Wine Resort — Valle de Uco, Mendoza, Argentina</div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/5492617051298" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.148.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    let current = 0;
+    const total = slides.length;
+
+    function goTo(i){
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = i;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    dots.forEach(d => d.addEventListener('click', () => {
+      goTo(parseInt(d.dataset.i));
+      resetTimer();
+    }));
+
+    let timer = setInterval(() => goTo((current + 1) % total), 5000);
+    function resetTimer(){
+      clearInterval(timer);
+      timer = setInterval(() => goTo((current + 1) % total), 5000);
+    }
+  </script>
+
+</body>
+</html>
